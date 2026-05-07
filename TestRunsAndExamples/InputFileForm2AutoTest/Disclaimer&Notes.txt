@@ -1,0 +1,8 @@
+It is noted that only the orginal graph and the final results of the sequential test are shown.
+
+Also it should be noted that this test was run in the Spyder IDE, so that the graphs could be outputted without interrupting the program.
+Other IDEs that do similar things could also be used.
+Users running this directly from the command line will have to "x" through every graph which is not feasible.
+
+This is a known flaw and will be optimized in later versions of the program.
+Thank you for your paitence.

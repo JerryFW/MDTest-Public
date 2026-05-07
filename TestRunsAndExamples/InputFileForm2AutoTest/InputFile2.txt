@@ -1,0 +1,6 @@
+MD Test Format
+run type-auto-sequential
+file-C:\Users\17205\OneDrive\Desktop\PythonThings\MolecularDynamicsProject\MD\TimeSeriesData.csv
+rowRead-2
+m-20
+ts-0

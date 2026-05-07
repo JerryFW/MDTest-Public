@@ -1,0 +1,8 @@
+MD Test Format
+run type-manual
+file-C:\Users\17205\OneDrive\Desktop\PythonThings\MolecularDynamicsProject\MD\NEWNarK_h2p_dis_190_194.dat
+delim-space
+m-32
+n-MAX
+ts-0
+alpha-0.05
