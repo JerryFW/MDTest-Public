@@ -1,0 +1,11 @@
+MD Test Format
+mode-sensitivity
+file-examples/data/NarK_TimeSeriesData.csv
+delim-comma
+col-6
+ts-0
+alpha-0.05
+min_blocks-24
+m_values-2,10,20,25,30
+outdir-results/config_legacy_sensitivity_nark
+prefix-legacy_sensitivity_nark_volume

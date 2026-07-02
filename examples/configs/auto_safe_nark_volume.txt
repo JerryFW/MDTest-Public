@@ -1,0 +1,11 @@
+MD Test Format
+mode-auto-safe
+file-examples/data/NarK_TimeSeriesData.csv
+delim-comma
+col-6
+alpha-0.05
+min_blocks-24
+m_trend_grid-2,5,10,20,25
+m_corr_grid-10,20,25,30,40,50,60
+outdir-results/config_auto_safe_nark
+prefix-auto_safe_nark_volume

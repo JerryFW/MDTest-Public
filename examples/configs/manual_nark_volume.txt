@@ -1,0 +1,11 @@
+MD Test Format
+mode-manual
+file-examples/data/NarK_TimeSeriesData.csv
+delim-comma
+col-6
+ts-600000
+m-30
+n-max
+alpha-0.05
+outdir-results/config_manual_nark
+prefix-manual_nark_volume
