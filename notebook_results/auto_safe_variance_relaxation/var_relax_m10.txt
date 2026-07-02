@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: examples/data/synthetic_variance_relaxation_independent.csv
+column: 1 (variance_relaxation)
+ts: 10374.0  start_index: 10374  m: 10  n: 962  alpha: 0.05
+
+mean_trend_mk: statistic=-1.1133688, p=0.26555006, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=-1.0303836, p=0.30282999, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.99869383, p=0.7144733, pass=True, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=1.9438814, p=0.97404512, pass=True, note=von Neumann ratio r=1.06267; lower-tail positive-correlation test
+
+mean: 0.01755821767
+standard error from block means: 0.0105594177
+95% t confidence interval: [-0.003163959407, 0.03828039475]
+overall_pass: True
+recommendation: all tests passed under the selected diagnostic assumptions
