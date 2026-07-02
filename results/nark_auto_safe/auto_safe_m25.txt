@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: examples/data/NarK_TimeSeriesData.csv
+column: 6 (Volume)
+ts: 561000.0  start_index: 561  m: 25  n: 48  alpha: 0.05
+
+mean_trend_mk: statistic=-0.9687964, p=0.33264678, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=-0.79103559, p=0.42892322, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.98667524, p=0.8560077, pass=True, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=-1.1441718, p=0.1262762, pass=True, note=von Neumann ratio r=0.834817; lower-tail positive-correlation test
+
+mean: 935696.9666
+standard error from block means: 89.27512504
+95% t confidence interval: [935517.3682, 935876.565]
+overall_pass: True
+recommendation: all tests passed under the selected diagnostic assumptions

@@ -1,0 +1,48 @@
+{
+  "column": 6,
+  "file": "examples/data/NarK_TimeSeriesData.csv",
+  "m_values": [
+    2,
+    10,
+    20,
+    25,
+    30
+  ],
+  "rows": [
+    {
+      "m_final": 19,
+      "m_init": 2,
+      "n_final": 64,
+      "status": "pass",
+      "ts": 558986.6666666671
+    },
+    {
+      "m_final": 24,
+      "m_init": 10,
+      "n_final": 52,
+      "status": "pass",
+      "ts": 535200.0000000006
+    },
+    {
+      "m_final": 25,
+      "m_init": 20,
+      "n_final": 50,
+      "status": "pass",
+      "ts": 517360.00000000064
+    },
+    {
+      "m_final": 33,
+      "m_init": 25,
+      "n_final": 39,
+      "status": "pass",
+      "ts": 493573.3333333339
+    },
+    {
+      "m_final": 55,
+      "m_init": 30,
+      "n_final": 23,
+      "status": "failed_n_below_min",
+      "ts": 487626.6666666672
+    }
+  ]
+}

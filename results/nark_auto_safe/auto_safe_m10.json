@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 935843.0269614743,
+  "ci_low": 935562.2980583616,
+  "column": 6,
+  "column_name": "Volume",
+  "file": "examples/data/NarK_TimeSeriesData.csv",
+  "m": 10,
+  "mean": 935702.662509918,
+  "n": 122,
+  "output_prefix": "results\\nark_auto_safe\\auto_safe_m10",
+  "overall_pass": false,
+  "recommendation": "increase m or extend trajectory; adjacent block means remain positively correlated",
+  "se": 70.89959631382365,
+  "start_index": 561,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.5124537811273856,
+      "passed": true,
+      "statistic": -0.6550217026197341
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.3324179321156978,
+      "passed": true,
+      "statistic": -0.9692550869846067
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.8955728408384893,
+      "passed": true,
+      "statistic": 0.9941489219332231
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.57558; lower-tail positive-correlation test",
+      "p_value": 1.3813471114964504e-06,
+      "passed": false,
+      "statistic": -4.687717201905229
+    }
+  },
+  "ts": 561000.0
+}
