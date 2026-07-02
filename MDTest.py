@@ -1,3 +1,4 @@
+
 """
 MDTest: stationarity and uncertainty diagnostics for scalar MD time series.
 
@@ -16,7 +17,7 @@ sensitivity   Run a legacy sequential search over several initial m values to
 make-data     Generate synthetic designed benchmark data sets.
 config        Run any of the above modes from a key-value configuration file.
 
-Also, the code now does not install dependencies at runtime.  Install them
+Now, the code now does not install dependencies at runtime (to avoid messing with existing environments).  Install them
 with:  pip install -r requirements.txt
 """
 from __future__ import annotations
@@ -34,7 +35,13 @@ import warnings
 import numpy as np
 import pandas as pd
 import matplotlib
-matplotlib.use("Agg")
+# Use a noninteractive backend automatically on headless Linux, but do not
+# force Agg on desktop Python or in Jupyter.  This keeps batch/script runs
+# safe while allowing walkthrough mode to display figures interactively.
+if os.environ.get("MDTEST_MPL_BACKEND"):
+    matplotlib.use(os.environ["MDTEST_MPL_BACKEND"])
+elif not os.environ.get("MPLBACKEND") and sys.platform.startswith("linux") and not os.environ.get("DISPLAY"):
+    matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats
 from scipy.stats import shapiro, norm
@@ -397,6 +404,7 @@ def evaluate_four_tests(
     prefix: str,
     make_plots: bool = True,
     min_blocks: int = 24,
+    display_plots: bool = False,
 ) -> ManualResult:
     validate_observable_column(arr, col, titles)
     times = arr[:, 0]
@@ -444,7 +452,7 @@ def evaluate_four_tests(
     outdir.mkdir(parents=True, exist_ok=True)
     out_prefix = outdir / prefix
     if make_plots:
-        plot_raw_and_blocks(times, values, block_t, y, ts, m, out_prefix, title=titles[col])
+        plot_raw_and_blocks(times, values, block_t, y, ts, m, out_prefix, title=titles[col], display=display_plots)
 
     result = ManualResult(
         file=file,
@@ -554,6 +562,7 @@ def choose_correlation_block(
     outdir: Path,
     prefix: str,
     make_plots: bool,
+    display_plots: bool = False,
 ) -> Optional[ManualResult]:
     times = arr[:, 0]
     ts = float(times[start_index])
@@ -564,7 +573,7 @@ def choose_correlation_block(
         result = evaluate_four_tests(
             file=file, arr=arr, titles=titles, col=col, ts=ts, m=m, n=None,
             alpha=alpha, outdir=outdir, prefix=f"{prefix}_m{m}", make_plots=make_plots,
-            min_blocks=min_blocks,
+            min_blocks=min_blocks, display_plots=display_plots,
         )
         # For m_corr selection, require normality and local correlation, while
         # preserving stationarity tests at the selected start.
@@ -707,6 +716,7 @@ def run_manual(args: argparse.Namespace) -> ManualResult:
         file=args.file, arr=arr, titles=titles, col=args.col, ts=args.ts,
         m=args.m, n=parse_n(args.n), alpha=args.alpha, outdir=outdir,
         prefix=prefix, make_plots=not args.no_plots, min_blocks=args.min_blocks,
+        display_plots=getattr(args, "display_plots", False),
     )
     print_manual_summary(res)
     return res
@@ -731,6 +741,7 @@ def run_auto_safe(args: argparse.Namespace) -> AutoSafeResult:
             file=args.file, arr=arr, titles=titles, col=args.col, start_index=idx,
             alpha=args.alpha, min_blocks=args.min_blocks, m_candidates=m_corr_candidates,
             outdir=outdir, prefix=args.prefix or "auto_safe", make_plots=not args.no_plots,
+            display_plots=getattr(args, "display_plots", False),
         )
         if manual is not None:
             selected_m = manual.m
@@ -802,6 +813,7 @@ def run_auto_compare(args: argparse.Namespace) -> AutoCompareResult:
             file=args.file, arr=arr, titles=titles, col=args.col, start_index=idx_star,
             alpha=args.alpha, min_blocks=args.min_blocks, m_candidates=m_corr_candidates,
             outdir=outdir, prefix=f"{args.prefix or 'auto_compare'}_star", make_plots=not args.no_plots,
+            display_plots=getattr(args, "display_plots", False),
         )
         if manual_star is not None:
             selected_m = manual_star.m
@@ -1068,8 +1080,48 @@ def print_auto_compare_summary(r: AutoCompareResult) -> None:
         print(format_manual_result(r.manual_result_star))
 
 
-def plot_raw_and_blocks(times: np.ndarray, values: np.ndarray, block_t: np.ndarray, block_y: np.ndarray, ts: float, m: int, prefix: Path, title: str = "observable") -> None:
+def _show_saved_or_live_figure(fig: Any, image_path: Path, display: bool) -> None:
+    if not display:
+        return
+
+    # If in a Jupyter notebook, display the saved PNG inline.
+    try:
+        from IPython import get_ipython
+        from IPython.display import Image, display as ipy_display
+
+        shell = get_ipython()
+        if shell is not None and shell.__class__.__name__ == "ZMQInteractiveShell":
+            ipy_display(Image(filename=str(image_path)))
+            return
+    except Exception:
+        pass
+
+    # Otherwise, just use Matplotlib's normal GUI display.
+    try:
+        plt.show(block=True)
+    except Exception:
+        print(f"Plot saved to {image_path}")
+
+
+def plot_initial_raw(times: np.ndarray, values: np.ndarray, out_path: Path, title: str = "observable", display: bool = False) -> None:
+    """Save and optionally display the initial raw time-series preview."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig, ax = plt.subplots(figsize=(8.0, 3.8))
+    ax.plot(times, values, linewidth=0.8)
+    ax.set_xlabel("time")
+    ax.set_ylabel(title)
+    ax.set_title("Initial raw time-series preview")
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=180)
+    _show_saved_or_live_figure(fig, out_path, display)
+    plt.close(fig)
+
+
+def plot_raw_and_blocks(times: np.ndarray, values: np.ndarray, block_t: np.ndarray, block_y: np.ndarray, ts: float, m: int, prefix: Path, title: str = "observable", display: bool = False) -> None:
     prefix.parent.mkdir(parents=True, exist_ok=True)
+    raw_path = prefix.with_name(prefix.name + "_raw.png")
+    blocks_path = prefix.with_name(prefix.name + "_blocks.png")
+
     fig, ax = plt.subplots(figsize=(8.0, 3.8))
     ax.plot(times, values, linewidth=0.8)
     ax.axvline(ts, linestyle="--", linewidth=1.0)
@@ -1077,7 +1129,8 @@ def plot_raw_and_blocks(times: np.ndarray, values: np.ndarray, block_t: np.ndarr
     ax.set_ylabel(title)
     ax.set_title(f"Raw time series; selected start ts={ts:g}")
     fig.tight_layout()
-    fig.savefig(prefix.with_name(prefix.name + "_raw.png"), dpi=180)
+    fig.savefig(raw_path, dpi=180)
+    _show_saved_or_live_figure(fig, raw_path, display)
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(8.0, 3.8))
@@ -1086,7 +1139,8 @@ def plot_raw_and_blocks(times: np.ndarray, values: np.ndarray, block_t: np.ndarr
     ax.set_ylabel(f"block mean of {title}")
     ax.set_title(f"Block means after coarse graining (m={m})")
     fig.tight_layout()
-    fig.savefig(prefix.with_name(prefix.name + "_blocks.png"), dpi=180)
+    fig.savefig(blocks_path, dpi=180)
+    _show_saved_or_live_figure(fig, blocks_path, display)
     plt.close(fig)
 
 
@@ -1284,12 +1338,13 @@ def run_walkthrough() -> Any:
     keeping the revised, reviewer-testable implementation unchanged.  The
     walkthrough only gathers inputs and then calls the same run_manual,
     run_auto_safe, run_auto_compare, or run_sensitivity functions used by the
-    command-line interface.  It deliberately keeps batch-safe defaults: plots
-    are saved to PNG files and blocking matplotlib windows are not opened.
+    command-line interface.  Batch modes still save PNG files by default;
+    walkthrough mode also displays the initial and result plots when the
+    local Python/Jupyter environment supports interactive display.
     """
     print(PROGRAM_BANNER)
     print("Interactive walkthrough mode")
-    print("Press Ctrl-C at any prompt to exit.  Reports and plots are saved to the output directory.\n")
+    print("Press Ctrl-C at any prompt to exit.  Reports and plots are saved to the output directory; plots are also displayed when possible.\n")
 
     file = _prompt_text("Input data file")
     delim = _prompt_text("Delimiter for input file (comma, space, or tab)", "comma")
@@ -1301,6 +1356,12 @@ def run_walkthrough() -> Any:
     _show_columns(titles)
     col = _prompt_int("Observable column index", 1, minimum=1)
     validate_observable_column(arr, col, titles)
+
+    display_plots = _prompt_yes_no("Display plots interactively during walkthrough", True)
+    if display_plots:
+        preview_path = Path("results/walkthrough_preview") / f"preview_col{col}_initial_raw.png"
+        print(f"Saving initial raw preview to {preview_path}")
+        plot_initial_raw(arr[:, 0], arr[:, col], preview_path, title=titles[col], display=True)
 
     print("Available run modes:")
     print("  manual       Evaluate the four-test protocol at a chosen (ts, m, n).")
@@ -1340,14 +1401,29 @@ def run_walkthrough() -> Any:
         prefix=prefix,
         drop_nan=drop_nan,
         no_plots=not make_plots,
+        display_plots=display_plots and make_plots,
     )
 
     if mode == "manual":
-        ts = _prompt_float("Start time ts", 0.0)
-        m = _prompt_int("Block size m", 10, minimum=1)
-        n = _prompt_text("Number of blocks n (integer or max)", "max")
-        args = argparse.Namespace(**common, ts=ts, m=m, n=n)
-        return run_manual(args)
+    # users can try different (ts, m, n)
+    # values without restarting the program. Each run gets a distinct
+    # prefix to avoid overwriting reports/plots from earlier trials.
+        run_count = 1
+        last_result = None
+        while True:
+            print(f"\nManual test #{run_count}")
+            ts = _prompt_float("Start time ts", 0.0)
+            m = _prompt_int("Block size m", 10, minimum=1)
+            n = _prompt_text("Number of blocks n (integer or max)", "max")
+
+            trial_common = dict(common)
+            trial_common["prefix"] = f"{prefix}_trial{run_count:02d}"
+            args = argparse.Namespace(**trial_common, ts=ts, m=m, n=n)
+            last_result = run_manual(args)
+
+            if not _prompt_yes_no("Run another manual test with different parameters", True):
+                return last_result
+            run_count += 1
 
     if mode == "auto-safe":
         m_trend_grid = _prompt_text("Trend-test m grid", "2,5,10,20,40")
