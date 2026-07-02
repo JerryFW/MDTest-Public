@@ -1,162 +1,121 @@
 # MDTest
 
 ## Application Description
-**MDTest** is a lightweight, standalone Python 3 program for post-processing scalar molecular dynamics (MD) time series. It is designed to provide statistically robust analysis while remaining accessible to both new and experienced users. 
-The statistical analysis follows a four-test framework proposed by Schiferl and Wallace for diagnosing equilibration and correlation in MD-derived time series. This includes
+**MDTest** is a lightweight, standalone Python 3 program for post-processing scalar molecular dynamics (MD) time series. It is designed to provide statistically robust analysis while remaining accessible to both new and experienced users.
+The automated analysis has been reorganized around
+- a four-test manual diagnostic for a user-selected `(ts, m, n)`;
+- a **multi-resolution stationarity** search (`auto-safe`) using a fixed grid of diagnostic block sizes;
+- an optional **Chodera/PyMBAR-style ESS/IACT comparator** (`auto-compare`) and a conservative production start `max(ts_SW, ts_ESS)`;
+- a legacy sensitivity diagnostic showing how the old sequential logic depends on the initial block size;
+- designed synthetic data sets for the mathematical examples discussed in the manuscript.
+
+
+The statistical analysis follows the four-test framework proposed by Schiferl and Wallace for diagnosing equilibration and correlation in MD-derived time series.  
+This includes
 - Two Mann--Kendall (MK) tests to check for lack of trend in mean and estimated standard error
 - A normality test on coarse-grained (block-averaged) samples
 - A one-tailed von Neumann test for positive serial correlation
+
 Furthermore, in addition to statistical outputs, **MDTest** provides diagnostic plots to help users interpret results and visually confirm equilibriation. 
 
 ---
 
-## Features
-- Interactive walkthrough mode for guided analysis
-- Scriptable command-line modes for quick execution
-- Configuration-file execution modes for batch jobs
-- Support for `.csv`, `.dat`, and `.txt` trajectory files
-- Saves inputs and statistical outputs for future reference
 
----
+## Installation
 
-## Requirements
+Use Python 3.11+ when possible.
 
-### Python Version
-
-- Python **3.11+**
-
-### Dependencies
-
-MDTest uses standard scientific Python libraries:
-
-- NumPy — array operations and vectorized statistics
-- SciPy — statistical routines
-- Pandas — file I/O and column handling
-- Matplotlib — plotting and diagnostics
-
-### Installation
-
-Install dependencies manually:
-
+Requirements are installed by running
 ```bash
-pip install numpy scipy pandas matplotlib
+python -m venv .venv
+source .venv/bin/activate      # Windows PowerShell: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-Or allow MDTest to attempt automatic installation at startup.
-
 
 ---
 
-## Execution Modes
+## Quick start
 
-MDTest supports three execution modes.
-
----
-
-### 1. Interactive Walkthrough Mode
-
-Launch by running:
+Interactive walkthrough mode (restored no-argument behavior):
 
 ```bash
 python MDTest.py
 ```
 
-The walkthrough mode:
+The walkthrough prompts for the input file, observable column, run mode, and analysis parameters, then calls the same internal routines as the command-line modes.  Diagnostic plots are saved to PNG files; batch runs do not open blocking plot windows.
 
-- Prompts users for required parameters
-- Explains invalid entries before continuing
-
-The early plotting step helps verify that the correct observable has been loaded before statistical analysis begins.
-
-After completion, MDTest prints and saves:
-
-- Input parameters
-- Analysis settings
-- Statistical test outcomes
-- Relevant warnings/disclaimers
-
-If the normality guard fails, the software warns that subsequent von Neumann testing may not be formally valid.
-
----
-
-### 2. Command-Line Mode
-
-Run directly with parameters:
+Manual four-test diagnostic:
 
 ```bash
-python MDTest.py <file> <delim> <colRead> <ts> <m> <n> <alphaValue>
+python MDTest.py manual \
+  --file examples/data/NarK_TimeSeriesData.csv \
+  --delim comma --col 6 --ts 600000 --m 30 --n max \
+  --outdir results/nark_manual
 ```
 
-
-| Argument | Description |
-|---|---|
-| `file` | Input trajectory file |
-| `delim` | Delimiter |
-| `colRead` | Column index to analyze |
-| `ts` | Start time index |
-| `m` | Block size |
-| `n` | Number of blocks (optional - defaults to maximum feasible number of blocks given `(ts, m)`) |
-| `alphaValue` | Statistical significance level (optional - defaults to 0.05) |
-
-
----
-
-### 3. Configuration File Mode
-
-Run using:
+Multi-resolution stationarity search:
 
 ```bash
-python MDTest.py <pathOfInputFile>
+python MDTest.py auto-safe \
+  --file examples/data/NarK_TimeSeriesData.csv \
+  --delim comma --col 6 \
+  --m-trend-grid 2,5,10,20,25 \
+  --m-corr-grid 10,20,25,30,40,50,60 \
+  --outdir results/nark_auto_safe
 ```
 
-The configuration file must:
-
-- Be a `.txt` file
-- Begin with the header:
-
-```text
-MD Test Format
-```
-
-- Use strict key-value formatting:
-
-```text
-key-value
-```
-
-with no extra spaces.
-
-#### Example Configuration File
-
-```text
-MD Test Format
-file-data.csv
-colRead-1
-ts-1000
-m-50
-n-20
-alphaValue-0.05
-```
-
-## Example Usage
-
-### Interactive
+Auto-safe plus Chodera/PyMBAR-style ESS/IACT comparison:
 
 ```bash
-python MDTest.py
+python MDTest.py auto-compare \
+  --file examples/data/synthetic_variance_relaxation_independent.csv \
+  --delim comma --col 1 \
+  --m-trend-grid 2,5,10,20,40 \
+  --m-corr-grid 10,20,40,80,160,320 \
+  --outdir results/variance_compare
 ```
 
-### Command-Line
+Legacy sensitivity diagnostic:
 
 ```bash
-python MDTest.py data.csv comma 1 1000 50 20 0.05
+python MDTest.py sensitivity \
+  --file examples/data/NarK_TimeSeriesData.csv \
+  --delim comma --col 6 --m-values 2,10,20,25,30 \
+  --outdir results/nark_sensitivity
 ```
 
-### Configuration File
+Generate designed synthetic data:
 
 ```bash
-python MDTest.py example_input.txt
+python MDTest.py make-data --outdir examples/data --n-points 100000
 ```
+
+## Configuration-file mode
+
+Configuration files begin with `MD Test Format` and then use `key-value` lines.
+
+```bash
+python MDTest.py config examples/configs/auto_compare_variance_relaxation.txt
+```
+
+The new parser accepts older spellings such as `run type-auto-sequential`, but maps them to the safer `auto-safe` implementation.  The original sequential logic is retained only through the explicit `sensitivity` mode.
+
+## Output
+
+Each run writes machine-readable JSON, text summaries, CSV scan tables, and PNG plots unless `--no-plots` is given.  Batch runs do not call blocking `plt.show()`.
+
+## Smoke test
+
+A small smoke test exercises the main paths and one controlled failure mode:
+
+```bash
+python scripts/smoke_test.py
+```
+
+## Notes on the ESS/IACT comparator
+
+`auto-compare` implements the same core heuristic used by `pymbar.timeseries.detect_equilibration`: scan candidate production starts, estimate the statistical inefficiency `g` of the retained segment from an FFT autocorrelation estimate, and choose the start maximizing retained effective sample size.  The statistical-inefficiency estimate follows the PyMBAR-style accumulation `1 + sum_t 2 C(t) (1 - t/N)` with first-nonpositive truncation after the minimum lag.  The comparator is included for comparison and conservative combination with MDTest stationarity diagnostics; it is not treated as a stationarity certificate.
 
 ---
 
