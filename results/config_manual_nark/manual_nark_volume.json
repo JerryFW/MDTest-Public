@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 935837.7009147935,
+  "ci_low": 935479.6540593946,
+  "column": 6,
+  "column_name": "Volume",
+  "file": "examples/data/NarK_TimeSeriesData.csv",
+  "m": 30,
+  "mean": 935658.6774870941,
+  "n": 39,
+  "output_prefix": "results\\config_manual_nark\\manual_nark_volume",
+  "overall_pass": true,
+  "recommendation": "all tests passed under the selected diagnostic assumptions",
+  "se": 88.43308822504038,
+  "start_index": 600,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.05596528635128479,
+      "passed": true,
+      "statistic": -1.911305860705237
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.3971171572571701,
+      "passed": true,
+      "statistic": -0.8467810775276365
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.16808743626967115,
+      "passed": true,
+      "statistic": 0.9592307657505652
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.96273; lower-tail positive-correlation test",
+      "p_value": 0.40800815393632583,
+      "passed": true,
+      "statistic": -0.23267174944752791
+    }
+  },
+  "ts": 600000.0
+}

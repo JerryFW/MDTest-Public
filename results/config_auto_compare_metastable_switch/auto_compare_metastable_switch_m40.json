@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 0.9995542373758646,
+  "ci_low": 0.9341535210342424,
+  "column": 1,
+  "column_name": "metastable_switch",
+  "file": "examples/data/synthetic_metastable_switch.csv",
+  "m": 40,
+  "mean": 0.9668538792050535,
+  "n": 243,
+  "output_prefix": "results\\config_auto_compare_metastable_switch\\auto_compare_metastable_switch_m40",
+  "overall_pass": false,
+  "recommendation": "increase m, extend trajectory, or use a nonparametric uncertainty model",
+  "se": 0.01660072440512455,
+  "start_index": 10241,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.1561766681121119,
+      "passed": true,
+      "statistic": -1.4180482852172354
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.11322655757246296,
+      "passed": true,
+      "statistic": -1.5838557127760435
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 1.0904034213532425e-30,
+      "passed": false,
+      "statistic": 0.2169056454757079
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.142621; lower-tail positive-correlation test",
+      "p_value": 4.834999817821263e-41,
+      "passed": false,
+      "statistic": -13.365103819440574
+    }
+  },
+  "ts": 10241.0
+}

@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: examples/data/synthetic_mean_drift_independent.csv
+column: 1 (mean_drift)
+ts: 9709.0  start_index: 9709  m: 10  n: 1029  alpha: 0.05
+
+mean_trend_mk: statistic=-1.7423853, p=0.081441047, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=0.95352115, p=0.34032609, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.99915791, p=0.93375457, pass=True, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=0.28747111, p=0.61312419, pass=True, note=von Neumann ratio r=1.00896; lower-tail positive-correlation test
+
+mean: -0.001293179522
+standard error from block means: 0.009865814182
+95% t confidence interval: [-0.02065261328, 0.01806625424]
+overall_pass: True
+recommendation: all tests passed under the selected diagnostic assumptions

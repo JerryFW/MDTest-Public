@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: examples/data/synthetic_metastable_switch.csv
+column: 1 (metastable_switch)
+ts: 10241.0  start_index: 10241  m: 320  n: 30  alpha: 0.05
+
+mean_trend_mk: statistic=-0.89205155, p=0.3723653, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=-1.6413749, p=0.10071963, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.25275965, p=2.8819348e-11, pass=False, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=-2.5671994, p=0.0051261826, pass=False, note=von Neumann ratio r=0.531035; lower-tail positive-correlation test
+
+mean: 0.9665647425
+standard error from block means: 0.03283643208
+95% t confidence interval: [0.8994066983, 1.033722787]
+overall_pass: False
+recommendation: increase m, extend trajectory, or use a nonparametric uncertainty model

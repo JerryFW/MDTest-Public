@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: examples/data/synthetic_underdamped_ar2.csv
+column: 1 (underdamped_ar2)
+ts: 8379.0  start_index: 8379  m: 10  n: 1162  alpha: 0.05
+
+mean_trend_mk: statistic=-0.46124831, p=0.64462047, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=-0.93657475, p=0.34897734, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.99832594, p=0.31697759, pass=True, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=-12.255486, p=7.8502168e-35, pass=False, note=von Neumann ratio r=0.640476; lower-tail positive-correlation test
+
+mean: 0.0009894390525
+standard error from block means: 0.001934613265
+95% t confidence interval: [-0.00280629032, 0.004785168425]
+overall_pass: False
+recommendation: increase m or extend trajectory; adjacent block means remain positively correlated
