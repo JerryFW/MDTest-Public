@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 0.03828039474682874,
+  "ci_low": -0.0031639594070982935,
+  "column": 1,
+  "column_name": "variance_relaxation",
+  "file": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\data\\synthetic_variance_relaxation_independent.csv",
+  "m": 10,
+  "mean": 0.017558217669865223,
+  "n": 962,
+  "output_prefix": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\raw_mdtest_outputs\\variance_relaxation_independent\\variance_relaxation_independent_star_m10",
+  "overall_pass": true,
+  "recommendation": "all tests passed under the selected diagnostic assumptions",
+  "se": 0.010559417696244978,
+  "start_index": 10374,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.30282998724682786,
+      "passed": true,
+      "statistic": -1.0303835605831388
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.2655500604933311,
+      "passed": true,
+      "statistic": -1.1133688200450804
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.7144732981558886,
+      "passed": true,
+      "statistic": 0.998693827573103
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=1.06267; lower-tail positive-correlation test",
+      "p_value": 0.9740451205359468,
+      "passed": true,
+      "statistic": 1.943881365079711
+    }
+  },
+  "ts": 10374.0
+}

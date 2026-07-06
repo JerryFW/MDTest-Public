@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 1.0131743121090633,
+  "ci_low": 0.920235113889683,
+  "column": 1,
+  "column_name": "metastable_switch",
+  "file": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\data\\synthetic_metastable_switch.csv",
+  "m": 80,
+  "mean": 0.9667047129993732,
+  "n": 121,
+  "output_prefix": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\raw_mdtest_outputs\\metastable_switch\\metastable_switch_m80",
+  "overall_pass": false,
+  "recommendation": "increase m, extend trajectory, or use a nonparametric uncertainty model",
+  "se": 0.02347031945688779,
+  "start_index": 10241,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.2792255852317035,
+      "passed": true,
+      "statistic": -1.0820606366251802
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.0713200200790867,
+      "passed": true,
+      "statistic": -1.8034343943753004
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 5.479908911220327e-23,
+      "passed": false,
+      "statistic": 0.18148443732372624
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.263534; lower-tail positive-correlation test",
+      "p_value": 2.728854667848914e-16,
+      "passed": false,
+      "statistic": -8.100848697961315
+    }
+  },
+  "ts": 10241.0
+}

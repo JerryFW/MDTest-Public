@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 935811.1464121642,
+  "ci_low": 935472.290770422,
+  "column": 6,
+  "column_name": "Volume",
+  "file": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\examples\\data\\NarK_TimeSeriesData.csv",
+  "m": 20,
+  "mean": 935641.7185912931,
+  "n": 58,
+  "output_prefix": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\raw_mdtest_outputs\\nark_volume\\nark_volume_star_m20",
+  "overall_pass": true,
+  "recommendation": "all tests passed under the selected diagnostic assumptions",
+  "se": 84.6096096614374,
+  "start_index": 616,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.12951813378015897,
+      "passed": true,
+      "statistic": -1.5160048193888414
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.8720999675540869,
+      "passed": true,
+      "statistic": -0.16099166223598316
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.985297481089771,
+      "passed": true,
+      "statistic": 0.9931322365776832
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.968704; lower-tail positive-correlation test",
+      "p_value": 0.40582076601392164,
+      "passed": true,
+      "statistic": -0.23830888316852633
+    }
+  },
+  "ts": 616000.0
+}

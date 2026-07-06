@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 0.004785168424994963,
+  "ci_low": -0.0028062903199398137,
+  "column": 1,
+  "column_name": "underdamped_ar2",
+  "file": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\data\\synthetic_underdamped_ar2.csv",
+  "m": 10,
+  "mean": 0.0009894390525275745,
+  "n": 1162,
+  "output_prefix": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\raw_mdtest_outputs\\underdamped_ar2\\underdamped_ar2_star_m10",
+  "overall_pass": false,
+  "recommendation": "increase m or extend trajectory; adjacent block means remain positively correlated",
+  "se": 0.0019346132648537589,
+  "start_index": 8379,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.34897734420761206,
+      "passed": true,
+      "statistic": -0.9365747522030604
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.644620468044619,
+      "passed": true,
+      "statistic": -0.46124830611972284
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.3169775589500627,
+      "passed": true,
+      "statistic": 0.9983259390017818
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.640476; lower-tail positive-correlation test",
+      "p_value": 7.8502168412864e-35,
+      "passed": false,
+      "statistic": -12.255486467212759
+    }
+  },
+  "ts": 8379.0
+}

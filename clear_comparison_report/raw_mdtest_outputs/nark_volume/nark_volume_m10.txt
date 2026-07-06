@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: C:\Users\jerry\Documents\GitHub\MDTestSourceCode\examples\data\NarK_TimeSeriesData.csv
+column: 6 (Volume)
+ts: 561000.0  start_index: 561  m: 10  n: 122  alpha: 0.05
+
+mean_trend_mk: statistic=-0.96925509, p=0.33241793, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=-0.6550217, p=0.51245378, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.99414892, p=0.89557284, pass=True, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=-4.6877172, p=1.3813471e-06, pass=False, note=von Neumann ratio r=0.57558; lower-tail positive-correlation test
+
+mean: 935702.6625
+standard error from block means: 70.89959631
+95% t confidence interval: [935562.2981, 935843.027]
+overall_pass: False
+recommendation: increase m or extend trajectory; adjacent block means remain positively correlated

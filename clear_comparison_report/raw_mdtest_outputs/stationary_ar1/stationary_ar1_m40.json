@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 0.12787302823268307,
+  "ci_low": -0.011516014513655339,
+  "column": 1,
+  "column_name": "stationary_ar1",
+  "file": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\data\\synthetic_stationary_ar1.csv",
+  "m": 40,
+  "mean": 0.05817850685951386,
+  "n": 500,
+  "output_prefix": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\raw_mdtest_outputs\\stationary_ar1\\stationary_ar1_m40",
+  "overall_pass": false,
+  "recommendation": "increase m or extend trajectory; adjacent block means remain positively correlated",
+  "se": 0.03547283493231253,
+  "start_index": 0,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.5249114051198374,
+      "passed": true,
+      "statistic": -0.6357929163092628
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.6887498319817436,
+      "passed": true,
+      "statistic": 0.4005522165538761
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.7066874381634534,
+      "passed": true,
+      "statistic": 0.9976290636218345
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.618964; lower-tail positive-correlation test",
+      "p_value": 7.963113508805197e-18,
+      "passed": false,
+      "statistic": -8.520211458823077
+    }
+  },
+  "ts": 0.0
+}

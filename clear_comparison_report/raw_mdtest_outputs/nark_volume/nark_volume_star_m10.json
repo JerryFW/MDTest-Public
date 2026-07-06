@@ -1,0 +1,43 @@
+{
+  "alpha": 0.05,
+  "ci_high": 935781.1963039213,
+  "ci_low": 935502.2408786649,
+  "column": 6,
+  "column_name": "Volume",
+  "file": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\examples\\data\\NarK_TimeSeriesData.csv",
+  "m": 10,
+  "mean": 935641.7185912931,
+  "n": 116,
+  "output_prefix": "C:\\Users\\jerry\\Documents\\GitHub\\MDTestSourceCode\\clear_comparison_report\\raw_mdtest_outputs\\nark_volume\\nark_volume_star_m10",
+  "overall_pass": false,
+  "recommendation": "increase m or extend trajectory; adjacent block means remain positively correlated",
+  "se": 70.4145706909465,
+  "start_index": 616,
+  "tests": {
+    "dispersion_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.2861634749847507,
+      "passed": true,
+      "statistic": -1.066575707474946
+    },
+    "mean_trend_mk": {
+      "note": "two-sided Mann--Kendall",
+      "p_value": 0.8918163019351827,
+      "passed": true,
+      "statistic": -0.1360062982686173
+    },
+    "normality_shapiro": {
+      "note": "Shapiro--Wilk normality test",
+      "p_value": 0.6091237930316,
+      "passed": true,
+      "statistic": 0.9905522107502729
+    },
+    "positive_serial_von_neumann": {
+      "note": "von Neumann ratio r=0.698325; lower-tail positive-correlation test",
+      "p_value": 0.000579016714019257,
+      "passed": false,
+      "statistic": -3.2490199828776203
+    }
+  },
+  "ts": 616000.0
+}

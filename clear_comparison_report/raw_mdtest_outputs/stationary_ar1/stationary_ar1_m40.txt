@@ -1,0 +1,15 @@
+MDTest four-test diagnostic report
+file: C:\Users\jerry\Documents\GitHub\MDTestSourceCode\clear_comparison_report\data\synthetic_stationary_ar1.csv
+column: 1 (stationary_ar1)
+ts: 0.0  start_index: 0  m: 40  n: 500  alpha: 0.05
+
+mean_trend_mk: statistic=0.40055222, p=0.68874983, pass=True, note=two-sided Mann--Kendall
+dispersion_trend_mk: statistic=-0.63579292, p=0.52491141, pass=True, note=two-sided Mann--Kendall
+normality_shapiro: statistic=0.99762906, p=0.70668744, pass=True, note=Shapiro--Wilk normality test
+positive_serial_von_neumann: statistic=-8.5202115, p=7.9631135e-18, pass=False, note=von Neumann ratio r=0.618964; lower-tail positive-correlation test
+
+mean: 0.05817850686
+standard error from block means: 0.03547283493
+95% t confidence interval: [-0.01151601451, 0.1278730282]
+overall_pass: False
+recommendation: increase m or extend trajectory; adjacent block means remain positively correlated
