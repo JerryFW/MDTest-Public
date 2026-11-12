@@ -91,7 +91,12 @@ class UploadReliabilityTests(unittest.TestCase):
         f = self.root / 'examples' / 'data' / 'my_series.csv'
         f.write_bytes(self.sample)
         found = list_workspace_files(self.root)
-        self.assertIn(('examples/data/my_series.csv', str(f)), found)
+        # Windows may spell the same directory as RUNNER~1 or runneradmin.
+        # Compare the filesystem target, not the unnormalized path spelling.
+        self.assertTrue(any(
+            label == 'examples/data/my_series.csv' and Path(path).resolve() == f.resolve()
+            for label, path in found
+        ), found)
         (self.root / '.venv').mkdir()
         self.assertNotIn('.venv', [label for label, _ in list_workspace_files(self.root)])
         self.wb.file_path.value = str(f)

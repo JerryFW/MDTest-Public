@@ -194,22 +194,30 @@ class EasyStartTests(unittest.TestCase):
                 self.assertEqual((target/'keep.txt').read_text(encoding='utf-8'), 'safe')
 
     def test_different_existing_python_is_archived_then_recreated(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            top = Path(tmp)/'repo'; top.mkdir()
-            with self.fake_location(top):
-                self.make_fake_venv(LAUNCH.VENV)
-                (LAUNCH.VENV/'old-state.txt').write_text('old', encoding='utf-8')
-                def faux_run(cmd, **kwargs):
-                    if cmd[:3] == [LAUNCH.sys.executable, '-m', 'venv']:
-                        self.make_fake_venv(LAUNCH.VENV)
-                    return SimpleNamespace(returncode=0)
-                with patch.object(LAUNCH, 'private_python_version', return_value=(3, 15)), \
-                     patch.object(LAUNCH, 'installed_ok', side_effect=[False, True]), \
-                     patch.object(LAUNCH, 'dependencies_ok', return_value=False), \
-                     patch.object(LAUNCH.subprocess, 'run', side_effect=faux_run):
-                    self.assertTrue(LAUNCH.setup())
-                    self.assertTrue((LAUNCH.VENV/'pyvenv.cfg').exists())
-                    self.assertFalse((LAUNCH.VENV/'old-state.txt').exists())
+        # Exercise both platform paths even if the CI host is not Windows.
+        # The previous Windows-only bypass silently reused the old interpreter.
+        for platform in ('linux', 'win32'):
+            with self.subTest(platform=platform), tempfile.TemporaryDirectory() as tmp:
+                top = Path(tmp)/'repo'; top.mkdir()
+                with self.fake_location(top):
+                    self.make_fake_venv(LAUNCH.VENV)
+                    (LAUNCH.VENV/'old-state.txt').write_text('old', encoding='utf-8')
+                    def faux_run(cmd, **kwargs):
+                        if cmd[:3] == [LAUNCH.sys.executable, '-m', 'venv']:
+                            self.make_fake_venv(LAUNCH.VENV)
+                        return SimpleNamespace(returncode=0)
+                    different_python = (LAUNCH.sys.version_info.major,
+                                        LAUNCH.sys.version_info.minor + 1)
+                    with patch.object(LAUNCH.sys, 'platform', platform), \
+                         patch.object(LAUNCH, 'private_python_version', return_value=different_python), \
+                         patch.object(LAUNCH, 'installed_ok', side_effect=[False, True]), \
+                         patch.object(LAUNCH, 'dependencies_ok', return_value=False), \
+                         patch.object(LAUNCH.subprocess, 'run', side_effect=faux_run) as run:
+                        self.assertTrue(LAUNCH.setup())
+                        self.assertTrue((LAUNCH.VENV/'pyvenv.cfg').exists())
+                        self.assertFalse((LAUNCH.VENV/'old-state.txt').exists())
+                        self.assertEqual(run.call_args_list[0].args[0][:3],
+                                         [LAUNCH.sys.executable, '-m', 'venv'])
 
     def test_diagnostic_probe_prints_precise_error(self):
         with tempfile.TemporaryDirectory() as tmp:

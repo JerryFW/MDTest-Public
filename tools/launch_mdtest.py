@@ -215,8 +215,9 @@ def setup() -> bool:
         say('  See docs/INSTALL_HELP.md for guidance.')
         return False
     # A private environment created using a different Python minor version
-    # cannot safely be reused; on macOS this happens after changing versions.
-    if VENV.exists() and PYTHON.is_file() and not sys.platform.startswith('win'):
+    # cannot safely be reused, including on Windows when START selects a new
+    # interpreter. Archive before installing under the selected interpreter.
+    if VENV.exists() and PYTHON.is_file():
         found = private_python_version()
         expected = (sys.version_info.major, sys.version_info.minor)
         if found != expected:
