@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MDTest | Workbench guide</title><style>
+:root{--ink:#193049;--ink2:#4d5f73;--navy:#102d4b;--blue:#176c9e;--light:#eff6fb;--border:#d8e5ee;--bg:#f2f6fa;--white:#fff;font-family:Inter,"Segoe UI",system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:18px;line-height:1.65}
+*{box-sizing:border-box}body{margin:0}a{color:#0a638f;text-decoration-color:#9cc4d9;text-underline-offset:3px}a:hover{color:#064c76;text-decoration-thickness:2px}
+.banner{background:linear-gradient(115deg,#102b49,#174b74);color:#fff;padding:32px 0 40px}.wrap{max-width:1100px;margin:auto;padding:0 28px}
+.eyebrow{font-weight:800;letter-spacing:.12em;font-size:18px;color:#c2e4f6;text-transform:uppercase}.banner h1{font-size:clamp(33px,4vw,47px);margin:9px 0 4px;line-height:1.15;letter-spacing:-.025em}.banner p{color:#d6e6ef;margin:8px 0;font-size:18px}
+.nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0 0}.nav a{color:#e2f5ff;text-decoration:none;padding:6px 13px;background:#ffffff18;border:1px solid #ffffff44;border-radius:9px;font-weight:650;font-size:15px}.nav a.active{background:#e5f5ff;color:#10456b}
+.paper{background:var(--white);border:1px solid var(--border);border-radius:18px;box-shadow:0 9px 30px #102c4710;margin:-18px auto 46px;padding:30px 46px 46px;max-width:1044px}
+.paper h1,.paper h2,.paper h3,.paper h4{color:#153a5d;line-height:1.27;letter-spacing:-.015em;scroll-margin-top:24px}.paper h1{font-size:32px;border-bottom:2px solid #d7e5ef;padding-bottom:13px;margin:18px 0}.paper h2{font-size:26px;margin:34px 0 10px;border-top:1px solid #e9eff4;padding-top:23px}.paper h3{font-size:21px;margin:24px 0 9px}.paper p{margin:13px 0;color:#35485d}.paper li{margin-bottom:8px}.paper ul,.paper ol{padding-left:30px}.paper strong{color:#1a3754}.paper code{font: .83em Consolas,"SFMono-Regular",monospace;background:#eff5fb;color:#085b83;padding:2px 5px;border-radius:5px;overflow-wrap:anywhere}
+.paper pre{font:15px/1.55 Consolas,"SFMono-Regular",monospace;background:#112c46;color:#eef8ff;border-radius:10px;padding:18px 21px;overflow-x:auto;white-space:pre}.paper pre code{color:inherit;background:none;padding:0;overflow-wrap:normal}
+.paper blockquote{margin:20px 0;padding:13px 20px;border-left:5px solid #2581ac;background:#eef8fd;border-radius:8px}.paper blockquote p{margin:5px 0}.paper table{width:100%;border-collapse:collapse;margin:20px 0;display:block;overflow:auto}.paper th,.paper td{text-align:left;padding:10px 12px;border-bottom:1px solid #dbe6ee}.paper th{background:#e9f3fa}.actions{border-top:1px solid #dce5eb;padding-top:20px;display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}.actions a{border:1px solid #cae0ec;border-radius:10px;background:#f5fafd;padding:9px 15px;font-size:16px;font-weight:650;text-decoration:none}.source{font-size:14px!important;color:#5a6b7d!important;margin-top:14px!important}
+@media(max-width:700px){:root{font-size:17px}.wrap{padding:0 16px}.paper{padding:20px 20px 30px;border-radius:12px}.paper h1{font-size:27px}.paper h2{font-size:23px}.banner h1{font-size:34px}}
+@media print{body{background:#fff}.banner{color:#000;background:#fff}.banner *{color:#000!important}.nav,.actions{display:none}.paper{border:0;box-shadow:none;margin:0;max-width:none}}
+</style></head>
+<body><header class="banner"><div class="wrap"><div class="eyebrow">MDTEST · USER SUPPORT</div><h1>Workbench guide</h1><p>Files, modes, figures, export, and troubleshooting</p><nav class="nav" aria-label="Documentation"><a href="../START_HERE.html">&#8592; Getting started</a><a class="" href="INSTALL_HELP.html">Installation help</a><a class="" href="START_HERE.html">Full quick-start</a><a class="active" href="WORKBENCH_GUIDE.html">Workbench guide</a><a href="MDTest_User_Manual.pdf">Traditional manual (PDF)</a></nav></div></header>
+<main class="wrap"><article class="paper"><blockquote>
+<p><strong>New to Python?</strong> Start with <code>START_HERE.html</code> in the repository root. On Windows double-click <code>START_MDTEST_WINDOWS.bat</code>; on macOS double-click <code>START_MDTEST_MAC.command</code>; on Linux run <code>bash START_MDTEST_LINUX.sh</code>. These prepare a private installation automatically. Do not manually link <code>src</code> or start the notebook from an unrelated Python environment.</p>
+</blockquote>
+<h1>MDTest Workbench guide</h1>
+<p>MDTest 2.2.0.dev7 presents the final polished notebook-first user interface <strong>above the frozen Round-2A.1 computational engine</strong>. The Workbench does not contain its own statistical formulas. It gathers user choices, calls the public <code>mdtest.api</code> functions, and then renders the returned structured result.</p>
+<h2>Install</h2>
+<p>Base package:</p>
+<pre><code class="language-bash">pip install .
+</code></pre>
+<p>Interactive Jupyter Workbench:</p>
+<pre><code class="language-bash">pip install &quot;.[workbench]&quot;
+</code></pre>
+<p>For a full local Jupyter environment:</p>
+<pre><code class="language-bash">pip install &quot;.[notebook]&quot;
+</code></pre>
+<h2>Launch from Jupyter</h2>
+<p>Open <code>MDTestWorkbench.ipynb</code>, or use:</p>
+<pre><code class="language-python">from mdtest.workbench import launch
+workbench = launch()
+</code></pre>
+<p>The Workbench is designed for a user who does not want to write Python code. The normal flow is:</p>
+<ol>
+<li>Choose <strong>Choose file</strong> to transfer a CSV/text file from your computer. The Workbench displays the filename and byte count and then loads columns automatically. If this browser widget does not receive the file, upload it with JupyterLab's <strong>left file browser</strong> (its Upload Files button), click <strong>Refresh list</strong>, and choose it under <strong>Local file</strong>. You may also enter an absolute or relative <strong>File path</strong> and click <strong>Load columns</strong>. If both path and upload are populated, the most recently edited control is effective.</li>
+<li>Verify the effective source and selected observable. A new successful file selection loads columns without an extra click;</li>
+<li>if the source bytes, delimiter, or NaN-handling setting changes, load the columns again before analysis;</li>
+<li>choose an analysis mode;</li>
+<li>optionally expand <strong>Advanced settings</strong>;</li>
+<li>click <strong>Run analysis</strong>;</li>
+<li>inspect the dashboard, explanations, and plots;</li>
+<li>export a reproducibility bundle if desired.</li>
+</ol>
+<h2>Product-style workspace</h2>
+<p>The final Workbench is intentionally organized like a small scientific application rather than a collection of independent notebook widgets. A branded header and three-step workflow rail lead into separate <strong>Data</strong>, <strong>Analysis</strong>, and <strong>Results</strong> cards. Primary and secondary actions, mode guidance, advanced settings, status feedback, and report export use one consistent visual system. The notebook result surface embeds metrics, interpretation, diagnostic figures, references, and reproducibility metadata in one dashboard. The visual redesign changes presentation only; it does not alter a request sent to the public API or a returned result.</p>
+<h2>Modes</h2>
+<ul>
+<li><strong>Auto compare</strong>: recommended comparison of multi-resolution MDTest and ESS/IACT. Both starts are displayed separately; the current conservative combined start is also displayed.</li>
+<li><strong>Auto safe</strong>: multi-resolution MDTest stationarity search without the ESS comparator.</li>
+<li><strong>ESS/IACT only</strong>: correlation/sampling-efficiency analysis. The interface explicitly reminds the user that this is not a stationarity test.</li>
+<li><strong>Manual</strong>: evaluate the four-test protocol at a user-selected production start and block length.</li>
+</ul>
+<h2>Explanation levels</h2>
+<ul>
+<li><strong>Minimal</strong>: verdicts only.</li>
+<li><strong>Guided</strong>: short chemist-friendly explanations and why each diagnostic matters.</li>
+<li><strong>Technical</strong>: includes the guided interpretation plus recorded inference settings, test statistics, p-values, significance level, selected ESS start information, and ESS scan controls already stored in the structured result. It does not recompute inference.</li>
+</ul>
+<p>The educational text is generated from <code>mdtest.education</code>; it does not alter any pass/fail result.</p>
+<h2>Diagnostic visualizations</h2>
+<p>Depending on the selected mode, the Workbench can show:</p>
+<ul>
+<li>raw trajectory with non-duplicated MDTest, ESS, and/or reported-start markers;</li>
+<li>multi-resolution mean-trend and dispersion-trend p-value maps with the selected MDTest start marked;</li>
+<li>ESS candidate-start curves for <code>Neff</code> and statistical inefficiency <code>g</code>;</li>
+<li>selected block means with the reported mean overlaid;</li>
+<li>final four-test p-values with the alpha threshold and explicit pass/attention labels.</li>
+</ul>
+<p>These plots consume frozen result objects and frozen parsing/block helpers. They do not define new statistical rules.</p>
+<h2>Export</h2>
+<p>The Workbench <strong>Export report</strong> action writes a small reproducibility bundle:</p>
+<ul>
+<li>structured result JSON;</li>
+<li>plain-text guided report;</li>
+<li>self-contained HTML guided report with diagnostic PNGs embedded directly in the HTML;</li>
+<li>separate PNG diagnostic figures for convenient reuse.</li>
+</ul>
+<p>The result JSON retains engine-generated settings and provenance, including input SHA-256. Before raw trajectory or block-mean plots reread a source file, the presentation layer verifies that the current SHA-256 still matches the analyzed input. Changed/missing source bytes fail clearly. Changing an inference control after a run disables Export until MDTest is rerun.</p>
+<h2>Programmatic use without widgets</h2>
+<p>The Workbench controller is separately testable:</p>
+<pre><code class="language-python">from mdtest.workbench import WorkbenchRequest, run_request
+
+req = WorkbenchRequest(
+    file=&quot;trajectory.csv&quot;,
+    col=1,
+    mode=&quot;auto-compare&quot;,
+)
+result = run_request(req)
+</code></pre>
+<p><code>run_request</code> dispatches to the same public API used by CLI and ordinary Python users.</p>
+<h2>Upload troubleshooting</h2>
+<p>If you select a file but see no <strong>File received</strong> message, the notebook/browser FileUpload widget has not delivered its data to Python. This can depend on the Jupyter frontend, browser, or upload size. <strong>You do not need to reinstall MDTest.</strong> Use JupyterLab's left file browser to upload the file into the MDTest folder; then choose <strong>Refresh list</strong> and select it under <strong>Local file</strong>. This alternative does not use the <code>ipywidgets.FileUpload</code> transfer channel. Files already in <code>data/</code>, <code>uploads/</code>, or <code>examples/data/</code> are listed too. If the file is elsewhere on disk, enter its full path under <strong>File path</strong> and click <strong>Load columns</strong>. Use <strong>Clear</strong> before selecting the same filename again.</p>
+<h2>Workbench versus the Python tutorial</h2>
+<p>Open <strong><code>MDTestWorkbench.ipynb</code></strong> for day-to-day analysis using graphical controls.
+The optional <strong><code>tutorials/MDTest_Tutorial.ipynb</code></strong> demonstrates the public Python API in worked examples for users who want to learn how the calculations are called. Start the launcher, browse to the <code>tutorials</code> folder in JupyterLab, and run the tutorial there. The startup cell handles example-data paths automatically.</p>
+<div class="actions"><a href="../START_HERE.html">&#8592; Back to Getting Started</a><a href="MDTest_User_Manual.pdf">Traditional manual (PDF)</a></div><p class="source">Full guide rendered locally from <code>docs/WORKBENCH_GUIDE.md</code>. The original Markdown source is also included in this repository.</p></article></main></body></html>

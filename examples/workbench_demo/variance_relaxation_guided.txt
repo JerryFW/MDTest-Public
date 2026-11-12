@@ -1,0 +1,39 @@
+MDTest guided analysis summary
+==============================
+Mode: MDTest + ESS/IACT
+Status: MDTest and ESS/IACT starts available
+MDTest start: 10374
+ESS start: 0
+Reported start: 10374
+g at ESS start: 1.02855
+Neff at ESS start: 19444.9
+Reporting block size: 10
+
+Interpretation
+- Stationarity and ESS viewed together: MDTest start ts=10374; ESS start ts=0; conservative reported start ts=10374.
+  The two analyses answer different questions. The MDTest branch screens stationarity-related block behavior; the ESS/IACT branch evaluates correlation-related sampling efficiency. Auto-compare reports both and currently uses the later start as its conservative combined start.
+  Why it matters: A large disagreement between the two starts is worth inspecting physically rather than hiding behind one scalar summary.
+- ESS/IACT correlation assessment: Selected statistical inefficiency g=1.029; effective sample count Neff=1.944e+04.
+  Statistical inefficiency measures the variance penalty from serial correlation in the retained series. Roughly, N correlated observations carry the mean-estimation information of about N/g independent observations under the assumptions of the estimator. The ESS scan chooses a candidate start that maximizes the retained effective sample count.
+  Why it matters: ESS/IACT addresses correlation and sampling efficiency. By itself it does not test whether the retained mean, variance, or distribution is stationary.
+- Mean-trend screen: No significant monotonic trend detected (p=0.2656).
+  The Mann-Kendall test is applied to the sequence of block means. A pass means the test did not detect a systematic monotonic drift at the chosen significance level; it is not proof that every form of nonstationarity is absent.
+  Why it matters: A continuing drift in the block means can bias an equilibrium average.
+- Dispersion-trend screen: No significant monotonic change in block dispersion detected (p=0.3028).
+  MDTest applies a Mann-Kendall trend screen to a block-level fluctuation proxy. This asks whether the size of the fluctuations is still changing with time, even when the mean itself may look settled.
+  Why it matters: A time-dependent fluctuation scale can bias variances and fluctuation-derived properties.
+- Block-mean normality screen: Block means are not rejected as non-normal (p=0.7145).
+  The Shapiro-Wilk test is applied to the block means. Passing means the available block means are compatible with the normality assumption at the chosen significance level; it does not prove that the underlying molecular observable itself is Gaussian.
+  Why it matters: Approximate normality of block means supports the Student-t uncertainty calculation used here.
+- Residual positive-correlation screen: No significant positive adjacent-block persistence detected (p=0.974).
+  The one-tailed von Neumann successive-difference diagnostic asks whether neighboring block means remain too similar. MDTest uses it as a local positive-correlation screen, not as a complete estimate of the full autocorrelation tail.
+  Why it matters: Residual block-to-block correlation means the chosen blocks may still be too short for reporting uncertainty.
+
+Learn more
+- S. K. Schiferl and D. C. Wallace, 'Statistical errors in molecular dynamics averages,' J. Chem. Phys. 83, 5203-5209 (1985). https://doi.org/10.1063/1.449733
+- J. D. Chodera, 'A Simple Method for Automated Equilibration Detection in Molecular Simulations,' J. Chem. Theory Comput. 12, 1799-1805 (2016). https://doi.org/10.1021/acs.jctc.5b00784
+- H. Flyvbjerg and H. G. Petersen, 'Error estimates on averages of correlated data,' J. Chem. Phys. 91, 461-466 (1989). https://doi.org/10.1063/1.457480
+- H. B. Mann, 'Nonparametric Tests Against Trend,' Econometrica 13, 245-259 (1945). https://doi.org/10.2307/1907187
+- M. G. Kendall, Rank Correlation Methods, 4th ed. (Griffin, London, 1975). https://search.worldcat.org/title/3827024
+- S. S. Shapiro and M. B. Wilk, 'An analysis of variance test for normality (complete samples),' Biometrika 52, 591-611 (1965). https://doi.org/10.1093/biomet/52.3-4.591
+- J. von Neumann, 'Distribution of the Ratio of the Mean Square Successive Difference to the Variance,' Ann. Math. Stat. 12, 367-395 (1941). https://doi.org/10.1214/aoms/1177731677

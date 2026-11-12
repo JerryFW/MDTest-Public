@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdtest"
+version = "2.2.0.dev7"
+description = "Stationarity-aware diagnostics and statistical-error assessment for molecular-dynamics time series"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+  {name = "Jerry F. Wang"},
+  {name = "Haobin Wang"},
+  {name = "Hai Lin"},
+]
+dependencies = [
+  "numpy>=1.24,<3",
+  "scipy>=1.10,<2",
+  "pandas>=2.0,<4",
+  "matplotlib>=3.7,<4",
+]
+keywords = ["molecular dynamics", "stationarity", "equilibration", "autocorrelation", "effective sample size"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Chemistry",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.optional-dependencies]
+workbench = [
+  "ipywidgets>=8,<9",
+]
+notebook = [
+  "ipywidgets>=8,<9",
+  "jupyterlab>=4,<5",
+  "nbconvert>=7,<8",
+]
+
+[project.scripts]
+mdtest = "mdtest.cli:entrypoint"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
