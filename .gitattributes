@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep Python source and freeze hashes identical on Windows, macOS and Linux.
+*.py text eol=lf

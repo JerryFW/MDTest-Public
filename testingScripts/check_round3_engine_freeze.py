@@ -52,7 +52,10 @@ approved = (APPROVED_DEV10 if (is_dev7 or is_dev10 or is_dev11 or is_dev12 or is
 failed=[]
 for rel,baseline_expected in EXPECTED.items():
     expected = approved.get(rel, baseline_expected)
-    actual=hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()
+    # Git may check out Python files with CRLF on Windows. Ignore only this
+    # line-ending representation difference; preserve the pinned hashes.
+    data = (ROOT / rel).read_bytes()
+    actual = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
     if actual!=expected: failed.append((rel,expected,actual))
 if failed:
     for rel,e,a in failed: print(f"FAIL {rel}\n expected {e}\n actual   {a}")
